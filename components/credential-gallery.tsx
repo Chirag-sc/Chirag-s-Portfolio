@@ -1,13 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import {
-  ArrowUpRight,
-  Award,
-  Minus,
-  Plus,
-  RotateCcw,
-  Scan,
-} from 'lucide-react';
+import { ArrowUpRight, Minus, Plus, RotateCcw, Scan } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -33,37 +26,37 @@ export function CredentialCard({
   }, [credential.image]);
   const card = (
     <>
-      <div className="credential-top">
-        <span className="mono">
-          0{index + 1} / {credential.kind}
-        </span>
-        <Award size={20} />
-      </div>
+      <span className="credential-index mono">
+        {String(index + 1).padStart(2, '0')}
+      </span>
+      <p className="credential-issuer">{credential.issuer}</p>
       <div className="credential-content">
-        <p className="credential-issuer">{credential.issuer}</p>
         <h3>{credential.title}</h3>
+        {credential.date && (
+          <p className="credential-date mono">{credential.date}</p>
+        )}
       </div>
-      {credential.image && !failed ? (
-        <div className="credential-thumbnail">
-          <img
-            ref={previewRef}
-            src={credential.image}
-            alt={`${credential.title} certificate preview`}
-            onError={() => setFailed(true)}
-            loading="lazy"
-          />
-          <span>
-            <Scan size={15} /> View credential
-          </span>
-        </div>
-      ) : (
+      <div className="credential-tail">
         <p className="credential-type">
           {credential.kind === 'Certification'
-            ? 'CERTIFICATION'
-            : 'VIRTUAL JOB SIMULATION'}
+            ? 'Certification'
+            : 'Virtual job simulation'}
         </p>
-      )}
-      {credential.date && <p className="mono">{credential.date}</p>}
+        {credential.image && !failed ? (
+          <div className="credential-thumbnail">
+            <img
+              ref={previewRef}
+              src={credential.image}
+              alt={`${credential.title} certificate preview`}
+              onError={() => setFailed(true)}
+              loading="lazy"
+            />
+            <span>
+              <Scan size={15} /> View credential
+            </span>
+          </div>
+        ) : null}
+      </div>
     </>
   );
   return (

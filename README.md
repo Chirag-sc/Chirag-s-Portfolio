@@ -32,7 +32,7 @@ Without an image, a card displays the issuer, title, and credential type. With a
 
 ## How the black hole works
 
-`components/scene/black-hole-shader.ts` is a single full-screen fragment shader. It evaluates a layered procedural starfield in warped source coordinates, so the background itself is distorted near the hole. A circular occlusion mask, thin photon-ring-inspired edge, inclined turbulent annulus, and separately modelled upper/lower disk images suggest light travelling around the shadow. Radial filaments rotate at radius-dependent speeds; modest side-dependent brightness and analytic glow add depth.
+`components/scene/black-hole-shader.ts` is a single full-screen fragment shader. Stable star populations vary in size, brightness, temperature, and spatial density, with dark regions and very faint dust. Source-coordinate lensing stretches nearby stars; DOM text is outside the renderer. A circular occlusion mask, thin luminous edge, inclined annulus, and upper/lower disk images surround the shadow. Domain-warped filaments, broad density variation, localized brightness, and radius-dependent orbital speeds replace periodic striping. Subpixel detail fades to limit shimmer; bloom stays restrained.
 
 This is an **artistic approximation, not a scientifically accurate simulation**. It does not integrate relativistic null geodesics, simulate a Kerr spacetime, or generate scientifically meaningful observations. The decorative renderer is separate from the BLACK HOLE AI project and makes no claim to its analytical capabilities.
 
@@ -42,9 +42,27 @@ Central parameters in `lib/scene-config.ts`: `lensingStrength`, `diskTilt` (radi
 
 One persistent canvas renders the site. DPR is capped at 1.5 on desktop and 1 on mobile. The renderer can lower resolution and drop a star layer after sampling slow frames. This is adaptive behavior, not a measured FPS guarantee. No performance target is represented as an achieved benchmark.
 
-The visible Reduced effects switch freezes orbital time and renders on demand. OS `prefers-reduced-motion` is honored on initial load and when it changes. An explicit visitor choice persists locally when storage is available. Hidden tabs render on demand; animation time is bounded on resume. Native scrolling is never hijacked. Section progress gently shifts and fades the black hole into a calmer starfield.
+`lib/scene-motion.ts` maps measured section positions to a continuous journey and damps native-scroll progress. `lib/scene-framing.ts` defines the compositions: the monumental opening, quiet About, renewed light around BLACK HOLE AI, cooler ACAD-SYNC, and the subdued final sections. These measured landmarks also initialize direct section loads. Fine mouse pointers produce restrained depth-dependent star parallax; touch input does not.
 
-WebGL2 availability, scene exceptions, shader errors, and context loss lead to a static fallback. The two `public/space-fallback-*.webp` images were captured from this app’s actual renderer. `?scene=static` exercises the no-canvas fallback. Content and all links remain available.
+The visible Reduced effects switch disables camera travel and parallax, freezes orbital time, and renders on demand. Only scroll-driven opacity changes remain, fading the stationary hole before About. OS `prefers-reduced-motion` is honored on initial load and when it changes, including when a visitor tries to disable reduced effects. An explicit visitor choice persists locally when storage is available. Hidden tabs render on demand; animation time is bounded on resume. Native scrolling is never hijacked. Run the motion checks with `node --experimental-strip-types --test tests/scene-motion.test.mjs` on Node 22.
+
+## Inspect the horizon
+
+The optional hero control opens an accessible Base UI dialog. It gives the existing canvas a centered composition and freezes time and parallax while the visitor compares lensing. A single keyboard- and touch-operable slider changes only background-star bending; the disk geometry stays stable. The labels and their leaders are HTML, positioned from the same framing coordinates as the shader. Short viewports use a compact legend and scrollable controls.
+
+The ordinary journey state remains in refs during inspection. Closing restores the exact scroll position and trigger focus, returns normal lensing, and resumes the preserved scene. Measurements refresh after exit so resizing or rotating during inspection does not leave stale section positions. Escape and focus containment use the existing dialog primitive. The effect remains an artistic illustration, with no physical units or calibrated measurements.
+
+When WebGL is unavailable or lost, the dialog shows a still, announces the change, and disables the slider with a “Still view” status. It does not imply that the still responds to the control. The normal site remains fully usable.
+
+Run both framing and motion suites on Node 22 with `node --experimental-strip-types --test tests/scene-motion.test.mjs tests/scene-framing.test.mjs`.
+
+## Navigation and composition
+
+`components/journey-navigation.tsx` tracks the section at the reading position and places one decorative amber marker beside its link. It handles direct section/detail links, restored scroll, resizing, font loading, and the document bottom. The active link exposes `aria-current="location"`; the marker stops moving under reduced effects or OS reduced motion. The existing navigation becomes a disclosure menu at 800 px so tablet links do not crowd the identity.
+
+The hero keeps CHIRAG S. on one line beside the cropped horizon. BLACK HOLE AI uses a full-width chapter heading with its existing conceptual diagram and clearly labelled engineering/progress notes. ACAD-SYNC retains a distinct cooler composition. Credentials render as numbered archive rows, with actual image viewers and verification links only when supplied. The distant Contact horizon reuses the existing renderer capture; it adds no canvas or animation.
+
+WebGL2 availability, scene exceptions, shader errors, and context loss lead to a static fallback. The desktop and mobile `public/space-fallback-*.webp` and `public/space-inspect-*.webp` images are clean captures from the final renderer, including the current filaments and lensing. Inspection stills use the baseline lensing setting. Short landscape phones use the wide captures to preserve the shadow’s silhouette. `?scene=static` exercises the no-canvas fallback. Content and all links remain available.
 
 ## Missing real assets
 
@@ -55,4 +73,3 @@ WebGL2 availability, scene exceptions, shader errors, and context loss lead to a
 ## Validation
 
 See `VALIDATION.md` for the checks actually performed. Screenshots and local QA fixtures are not included in the deployed source or public credential gallery.
-

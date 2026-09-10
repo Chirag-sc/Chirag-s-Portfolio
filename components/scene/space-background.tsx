@@ -25,7 +25,17 @@ class SceneBoundary extends Component<
     return this.state.failed ? null : this.props.children;
   }
 }
-export default function SpaceBackground({ reduced }: { reduced: boolean }) {
+export default function SpaceBackground({
+  reduced,
+  inspecting,
+  lensing,
+  onAvailabilityChange,
+}: {
+  reduced: boolean;
+  inspecting: boolean;
+  lensing: number;
+  onAvailabilityChange: (value: boolean) => void;
+}) {
   const backdrop = useRef<HTMLDivElement>(null);
   const [supported, setSupported] = useState(false);
   const [ready, setReady] = useState(false);
@@ -36,6 +46,10 @@ export default function SpaceBackground({ reduced }: { reduced: boolean }) {
     setFailed(true);
     setReady(false);
   }, []);
+  useEffect(
+    () => onAvailabilityChange(ready && supported && !failed),
+    [ready, supported, failed, onAvailabilityChange],
+  );
   useEffect(() => {
     const fade = () =>
       backdrop.current?.style.setProperty(
@@ -65,7 +79,7 @@ export default function SpaceBackground({ reduced }: { reduced: boolean }) {
   return (
     <div
       ref={backdrop}
-      className={`space-background ${ready ? 'scene-ready' : ''}`}
+      className={`space-background ${ready ? 'scene-ready' : ''} ${inspecting ? 'inspection-scene' : ''}`}
       aria-hidden="true"
       data-scene={failed || !supported ? 'static' : ready ? 'webgl' : 'loading'}
     >
@@ -75,6 +89,8 @@ export default function SpaceBackground({ reduced }: { reduced: boolean }) {
           <Suspense fallback={null}>
             <SpaceScene
               reduced={reduced}
+              inspecting={inspecting}
+              lensing={lensing}
               hidden={hidden}
               onReady={onReady}
               onFail={onFail}
