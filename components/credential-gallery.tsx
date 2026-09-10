@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { ArrowUpRight, Minus, Plus, RotateCcw, Scan } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, Download, Minus, Plus, RotateCcw, Scan } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -18,12 +18,22 @@ export function CredentialCard({
   index: number;
 }) {
   const [zoom, setZoom] = useState(1);
+  const [pageIndex, setPageIndex] = useState(0);
   const [failed, setFailed] = useState(false);
+  const [previewFailed, setPreviewFailed] = useState(false);
   const previewRef = useRef<HTMLImageElement>(null);
+  const imageScroll = useRef<HTMLDivElement>(null);
+  const pages = credential.pages?.length ? credential.pages : credential.image ? [credential.image] : [];
+  const changePage = (index: number) => {
+    setPageIndex(index);
+    setZoom(1);
+    setFailed(false);
+    imageScroll.current?.scrollTo({top: 0, left: 0, behavior: 'instant'});
+  };
   useEffect(() => {
     const image = previewRef.current;
-    if (image?.complete && image.naturalWidth === 0) setFailed(true);
-  }, [credential.image]);
+    if (image?.complete && image.naturalWidth === 0) setPreviewFailed(true);
+  }, [credential.thumbnail, credential.image]);
   const card = (
     <>
       <span className="credential-index mono">
@@ -42,15 +52,17 @@ export function CredentialCard({
             ? 'Certification'
             : 'Virtual job simulation'}
         </p>
-        {credential.image && !failed ? (
+        {credential.image ? (
           <div className="credential-thumbnail">
+            {!previewFailed && (
             <img
               ref={previewRef}
-              src={credential.image}
+              src={credential.thumbnail ?? credential.image}
               alt={`${credential.title} certificate preview`}
-              onError={() => setFailed(true)}
+              onError={() => setPreviewFailed(true)}
               loading="lazy"
             />
+            )}
             <span>
               <Scan size={15} /> View credential
             </span>
@@ -62,7 +74,7 @@ export function CredentialCard({
   return (
     <article className="credential-card">
       {credential.image ? (
-        <Dialog onOpenChange={() => setZoom(1)}>
+        <Dialog onOpenChange={() => changePage(0)}>
           <DialogTrigger className="credential-trigger">{card}</DialogTrigger>
           <DialogContent className="certificate-dialog">
             <DialogTitle>{credential.title}</DialogTitle>
@@ -89,7 +101,18 @@ export function CredentialCard({
                 <RotateCcw size={17} />
               </button>
             </div>
+            {(credential.pdf || pages.length > 1) && (
+              <div className="certificate-document-actions">
+                {pages.length > 1 && <div className="certificate-page-controls">
+                  <button aria-label="Previous certificate page" disabled={pageIndex === 0} onClick={() => changePage(pageIndex - 1)}><ChevronLeft size={18} /></button>
+                  <output aria-live="polite">Page {pageIndex + 1} of {pages.length}</output>
+                  <button aria-label="Next certificate page" disabled={pageIndex === pages.length - 1} onClick={() => changePage(pageIndex + 1)}><ChevronRight size={18} /></button>
+                </div>}
+                {credential.pdf && <a className="certificate-download" href={credential.pdf} download><Download size={16} /> Download PDF</a>}
+              </div>
+            )}
             <div
+              ref={imageScroll}
               className="certificate-image-scroll"
               tabIndex={0}
               aria-label="Certificate image, scroll to pan when zoomed"
@@ -102,8 +125,9 @@ export function CredentialCard({
               ) : (
                 <img
                   className="certificate-full-image"
-                  src={credential.image}
-                  alt={`${credential.title}, issued by ${credential.issuer}`}
+                  key={pages[pageIndex]}
+                  src={pages[pageIndex]}
+                  alt={`${credential.title}, ${credential.issuer}${pages.length > 1 ? `, page ${pageIndex + 1} of ${pages.length}` : ''}`}
                   style={{ width: `${zoom * 100}%`, maxWidth: 'none' }}
                   onError={() => setFailed(true)}
                 />

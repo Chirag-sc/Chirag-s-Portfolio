@@ -1028,6 +1028,10 @@ body {
   border-top: 1px solid #ffffff15;
 }
 .certificate-dialog {
+  display: flex !important;
+  flex-direction: column;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
   width: 90vw !important;
   max-width: 1050px !important;
   background: #10161b !important;
@@ -1044,6 +1048,8 @@ body {
   width: 44px;
 }
 .certificate-image-scroll {
+  flex: 1 1 auto;
+  min-height: 120px;
   max-height: 66vh;
   overflow: auto;
   overscroll-behavior: contain;
@@ -1052,6 +1058,19 @@ body {
 .certificate-full-image {
   display: block;
   height: auto;
+}
+.certificate-dialog > :not(.certificate-image-scroll) { flex-shrink: 0; }
+.certificate-document-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 18px; }
+.certificate-page-controls { display: flex; align-items: center; gap: 8px; }
+.certificate-page-controls button { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid #6b879848; border-radius: 3px; background: #1d2830; color: #d4e2e9; }
+.certificate-page-controls button:disabled { opacity: .35; cursor: default; }
+.certificate-page-controls button:not(:disabled):hover { background: #26323e; }
+.certificate-page-controls output { font-size: 13px; min-width: 75px; text-align: center; }
+.certificate-download { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; color: #e2c49a; margin-left: auto; }
+.certificate-download:hover { color: #fff0d6; text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 600px) {
+  .certificate-dialog { width: calc(100vw - 24px) !important; padding: 18px !important; gap: 12px; }
+  .certificate-document-actions { gap: 6px 12px; }
 }
 .image-toolbar {
   display: flex;

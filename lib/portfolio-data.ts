@@ -5,6 +5,9 @@ export interface Credential {
   kind: 'Certification' | 'Job simulation';
   date?: string;
   image?: string;
+  thumbnail?: string;
+  pages?: string[];
+  pdf?: string;
   verificationUrl?: string;
 }
 export const portfolio = {
@@ -132,32 +135,54 @@ export const portfolio = {
 export const credentials: Credential[] = [
   {
     id: 'oracle-agentic',
-    title: 'Agentic AI Foundations Associate',
+    title: 'Agentic AI Certified Foundations Associate',
     issuer: 'Oracle',
     kind: 'Certification',
+    date: '16 August 2026',
+    image: '/certificates/oracle-agentic-1.webp',
+    thumbnail: '/certificates/oracle-agentic-thumb.webp',
+    pdf: '/certificates/oracle-agentic.pdf',
   },
   {
     id: 'ibm-tensorflow',
     title: 'Deep Learning with TensorFlow',
-    issuer: 'IBM',
+    issuer: 'IBM / Etrain Education',
     kind: 'Certification',
+    date: '6 September 2025',
+    image: '/certificates/ibm-tensorflow-1.webp',
+    thumbnail: '/certificates/ibm-tensorflow-thumb.webp',
+    pages: ['/certificates/ibm-tensorflow-1.webp', '/certificates/ibm-tensorflow-2.webp'],
+    pdf: '/certificates/ibm-tensorflow.pdf',
+    verificationUrl: 'https://courses.etrain.skillsnetwork.site/certificates/d1e095b4ee4a42a88f1666825b2c9f81',
   },
   {
     id: 'jpmorgan-software',
     title: 'Software Engineering Job Simulation',
     issuer: 'JPMorgan Chase & Co.',
     kind: 'Job simulation',
+    date: '23 January 2026',
+    image: '/certificates/jpmorgan-software-1.webp',
+    thumbnail: '/certificates/jpmorgan-software-thumb.webp',
+    pdf: '/certificates/jpmorgan-software.pdf',
   },
   {
     id: 'tata-genai',
-    title: 'GenAI-Powered Data Analytics Simulation',
+    title: 'GenAI Powered Data Analytics Job Simulation',
     issuer: 'Tata Group',
     kind: 'Job simulation',
+    date: '23 January 2026',
+    image: '/certificates/tata-genai-1.webp',
+    thumbnail: '/certificates/tata-genai-thumb.webp',
+    pdf: '/certificates/tata-genai.pdf',
   },
   {
     id: 'aws-architecture',
     title: 'Solutions Architecture Job Simulation',
     issuer: 'AWS',
     kind: 'Job simulation',
+    date: '23 January 2026',
+    image: '/certificates/aws-architecture-1.webp',
+    thumbnail: '/certificates/aws-architecture-thumb.webp',
+    pdf: '/certificates/aws-architecture.pdf',
   },
 ];
