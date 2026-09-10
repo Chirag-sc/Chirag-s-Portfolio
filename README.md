@@ -64,11 +64,6 @@ The hero keeps CHIRAG S. on one line beside the cropped horizon. BLACK HOLE AI u
 
 WebGL2 availability, scene exceptions, shader errors, and context loss lead to a static fallback. The desktop and mobile `public/space-fallback-*.webp` and `public/space-inspect-*.webp` images are clean captures from the final renderer, including the current filaments and lensing. Inspection stills use the baseline lensing setting. Short landscape phones use the wide captures to preserve the shadow’s silhouette. `?scene=static` exercises the no-canvas fallback. Content and all links remain available.
 
-## Missing real assets
-
-- Five certificate images, dates, and verification URLs were not supplied. Dates and verification links are omitted.
-- Project repository URLs, live-demo URLs, and product screenshots were not supplied. Project actions navigate to the implementation details on this page.
-- The resume’s previous Portfolio URL is not treated as a project demo.
 
 ## Validation
 
