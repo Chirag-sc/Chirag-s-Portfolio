@@ -1,3 +1,4 @@
+import { publicAsset } from './public-asset';
 export interface Credential {
   id: string;
   title: string;
@@ -16,7 +17,7 @@ export const portfolio = {
   discipline: 'AI & Data Science',
   location: 'Mangalore, Karnataka, India',
   email: 'chiragsubhash269@gmail.com',
-  resume: '/resume-chirag-s.pdf',
+  resume: publicAsset('/resume-chirag-s.pdf'),
   github: 'https://github.com/Chirag-sc',
   linkedin: 'https://linkedin.com/in/chirag-s-150168356',
   intro: 'I build intelligent software. And keep looking up.',
@@ -139,9 +140,9 @@ export const credentials: Credential[] = [
     issuer: 'Oracle',
     kind: 'Certification',
     date: '16 August 2026',
-    image: '/certificates/oracle-agentic-1.webp',
-    thumbnail: '/certificates/oracle-agentic-thumb.webp',
-    pdf: '/certificates/oracle-agentic.pdf',
+    image: publicAsset('/certificates/oracle-agentic-1.webp'),
+    thumbnail: publicAsset('/certificates/oracle-agentic-thumb.webp'),
+    pdf: publicAsset('/certificates/oracle-agentic.pdf'),
   },
   {
     id: 'ibm-tensorflow',
@@ -149,10 +150,10 @@ export const credentials: Credential[] = [
     issuer: 'IBM / Etrain Education',
     kind: 'Certification',
     date: '6 September 2025',
-    image: '/certificates/ibm-tensorflow-1.webp',
-    thumbnail: '/certificates/ibm-tensorflow-thumb.webp',
-    pages: ['/certificates/ibm-tensorflow-1.webp', '/certificates/ibm-tensorflow-2.webp'],
-    pdf: '/certificates/ibm-tensorflow.pdf',
+    image: publicAsset('/certificates/ibm-tensorflow-1.webp'),
+    thumbnail: publicAsset('/certificates/ibm-tensorflow-thumb.webp'),
+    pages: [publicAsset('/certificates/ibm-tensorflow-1.webp'), publicAsset('/certificates/ibm-tensorflow-2.webp')],
+    pdf: publicAsset('/certificates/ibm-tensorflow.pdf'),
     verificationUrl: 'https://courses.etrain.skillsnetwork.site/certificates/d1e095b4ee4a42a88f1666825b2c9f81',
   },
   {
@@ -161,9 +162,9 @@ export const credentials: Credential[] = [
     issuer: 'JPMorgan Chase & Co.',
     kind: 'Job simulation',
     date: '23 January 2026',
-    image: '/certificates/jpmorgan-software-1.webp',
-    thumbnail: '/certificates/jpmorgan-software-thumb.webp',
-    pdf: '/certificates/jpmorgan-software.pdf',
+    image: publicAsset('/certificates/jpmorgan-software-1.webp'),
+    thumbnail: publicAsset('/certificates/jpmorgan-software-thumb.webp'),
+    pdf: publicAsset('/certificates/jpmorgan-software.pdf'),
   },
   {
     id: 'tata-genai',
@@ -171,9 +172,9 @@ export const credentials: Credential[] = [
     issuer: 'Tata Group',
     kind: 'Job simulation',
     date: '23 January 2026',
-    image: '/certificates/tata-genai-1.webp',
-    thumbnail: '/certificates/tata-genai-thumb.webp',
-    pdf: '/certificates/tata-genai.pdf',
+    image: publicAsset('/certificates/tata-genai-1.webp'),
+    thumbnail: publicAsset('/certificates/tata-genai-thumb.webp'),
+    pdf: publicAsset('/certificates/tata-genai.pdf'),
   },
   {
     id: 'aws-architecture',
@@ -181,8 +182,8 @@ export const credentials: Credential[] = [
     issuer: 'AWS',
     kind: 'Job simulation',
     date: '23 January 2026',
-    image: '/certificates/aws-architecture-1.webp',
-    thumbnail: '/certificates/aws-architecture-thumb.webp',
-    pdf: '/certificates/aws-architecture.pdf',
+    image: publicAsset('/certificates/aws-architecture-1.webp'),
+    thumbnail: publicAsset('/certificates/aws-architecture-thumb.webp'),
+    pdf: publicAsset('/certificates/aws-architecture.pdf'),
   },
 ];

@@ -20,6 +20,7 @@ import {
   Database,
 } from 'lucide-react';
 import { portfolio } from '@/lib/portfolio-data';
+import { publicAsset } from '@/lib/public-asset';
 import { Switch } from '@/components/ui/switch';
 import SpaceBackground from '@/components/scene/space-background';
 import CredentialGallery from '@/components/credential-gallery';
@@ -448,7 +449,7 @@ export default function Portfolio() {
           <section className="section contact" id="contact">
             <img
               className="contact-horizon"
-              src="/space-inspect-desktop.webp"
+              src={publicAsset('/space-inspect-desktop.webp')}
               alt=""
               aria-hidden="true"
               loading="lazy"

@@ -1,0 +1,48 @@
+name: Deploy Event Horizon to GitHub Pages
+
+on:
+  push:
+    branches: ["Chirag's-Event-Horizon"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build portfolio for the project subpath
+        run: npm run build
+        env:
+          GITHUB_PAGES: 'true'
+      - name: Verify Pages artifact
+        run: node scripts/verify-pages.mjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/client
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy portfolio
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -12,7 +12,34 @@ npm run dev
 npm run build
 ```
 
-The static build is written to `dist/client/`. Deploy that directory to any static host. Preserve asset paths and serve `/resume-chirag-s.pdf` as `application/pdf`. Sites metadata lives in `.openai/hosting.json`. The private Sites preview requires the owner to sign in; public sharing is a separate access decision.
+The static build is written to `dist/client/`. Local development remains at `http://localhost:3000/`. A normal build targets the domain root; the GitHub Pages workflow sets `GITHUB_PAGES=true` for the project-site build described below.
+
+## GitHub Pages deployment
+
+In **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source. The workflow `.github/workflows/deploy-pages.yml` runs on pushes to `Chirag's-Event-Horizon` and can also be started with **Run workflow**. It uses Node 22, installs the lockfile, builds and verifies the portfolio, and uploads **only `dist/client`**. No generated files need to be committed.
+
+Expected URL: https://chirag-sc.github.io/Chirag-s-Portfolio/
+
+The previous automatic `pages build and deployment` run used **Build with Jekyll** against the source branch, so it rendered README documentation instead of running the application build.
+
+For a local Pages build:
+
+```sh
+# POSIX shell
+GITHUB_PAGES=true npm run build
+node scripts/verify-pages.mjs
+```
+
+```powershell
+$env:GITHUB_PAGES = 'true'
+npm run build
+node scripts/verify-pages.mjs
+Remove-Item Env:GITHUB_PAGES
+```
+
+With pinned Vinext `1.0.0-beta.5` and Vite `8.0.13`, setting Next `basePath` makes the prerenderer request the wrong route and skip the homepage. It also nests generated assets beneath the path prefix. Instead, `vite.config.ts` sets the Vite asset base only for Pages; `NEXT_PUBLIC_SITE_BASE` and `publicAsset()` prefix public files in both server-rendered HTML and client components. Vite rewrites CSS image/font URLs. `scripts/prepare-pages.mjs` prefixes remaining framework `/_next/` URLs in the static export, without changing content or moving files, and adds `.nojekyll`. No `basePath` or `assetPrefix` is set.
+
+The build fails if `dist/client/index.html` is absent. CI checks HTML/CSS references and confirms every public file was copied unchanged. Recheck this adapter when upgrading Vinext. Test Pages builds with a static server mounted at `/Chirag-s-Portfolio/`; `vinext start` is not a test of the Pages artifact. Development and ordinary root-hosted builds do not use the adapter.
 
 On Windows, npm may omit the optional Rolldown native package. This checkout explicitly includes `@rolldown/binding-win32-x64-msvc` as an optional dependency. Other platforms skip it and use Rolldown’s own platform dependency. The bundled Node runtime was used for validation because the system Node version was too old.
 
@@ -25,7 +52,7 @@ Project visuals are labelled conceptual diagrams. No product screenshots, projec
 ## Add certificate images
 
 1. Place a readable image in `public/certificates/`, such as `oracle-agentic.webp`.
-2. Add `image: '/certificates/oracle-agentic.webp'` to the matching credential in `lib/portfolio-data.ts`.
+2. Add `image: publicAsset('/certificates/oracle-agentic.webp')` to the matching credential in `lib/portfolio-data.ts`, using the same helper for thumbnails, extra pages, and PDFs.
 3. Optionally add `date` and `verificationUrl` when you have real values.
 
 Without an image, a card displays the issuer, title, and credential type. With an image, it opens the Base UI / shadcn accessible dialog with zoom in/out (100–300%), reset, scroll/pan, close, Escape, focus trapping, and restoration to its trigger. Failed assets revert to readable text. Certifications and virtual job simulations remain distinct.
